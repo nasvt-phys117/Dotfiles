@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Dot files and sync
+# List of dots:
+# - .config/i3/config
+# - .vim/UltiSnips/tex.snippets
+# - .config/polybar/config.ini
+# - .vimrc
+# - .Xresources
+# - .bashrc
+# - .config/ranger/rc.conf (αλλάζει το image preview σε true).
+
+
+# Options: -g , -c , -i, -h, -s
+# -g : github install
+# -s : github sync
+# -c : manual copy
+# -i : manual install
+# -h : display help message
+
+ARG=$1
+DIR=$HOME/tempdots
+echo $ARG
+echo $DIR
+
+case $ARG in
+	-h)
+		echo "Usage: dotsync -[g , s, c, i, h]
+
+	-g: Github install
+
+	-s: Github sync
+
+	-c: manual copy
+
+	-i: manual install
+
+	-h: This help message
+	"
+		;;
+	-c)
+		echo "Copying files to temporary directory."
+		mkdir $HOME/tempdots
+#cp $HOME/.config/polybar/config.ini $DIR/
+		cp $HOME/.vim/UltiSnips/tex.snippets $DIR/
+		cp $HOME/.vimrc $DIR/
+		cp $HOME/.Xresources $DIR/
+		cp $HOME/.bashrc $DIR/
+		echo "Done"
+		;;
+	-i)
+		echo "Installing files..."
+#cp -i $DIR/config.ini $HOME/.config/polybar/
+		cp -i $DIR/tex.snippets $HOME/.vin/UltiSnips/
+		cp -i $DIR/.vimrc $HOME/
+		cp -i $DIR/.Xresources $HOME/
+		cp -i $DIR/.bashrc $HOME/
+		;;
+	
+esac
