@@ -1,0 +1,364 @@
+###### LaTeX #####
+
+#### MathZone Context
+#### From https://vi.stackexchange.com/questions/18490/ultisnips-context-and-tex
+#### and https://castel.dev/post/lecture-notes-1/#context
+#### Usage: 
+####	contex "isMath()"
+####	snippet .....
+####	.............
+####	endsnippet
+
+global !p
+texMathZones = ['texMathZone'+x for x in ['A', 'AS', 'B', 'BS', 'C', 'CS', 'D', 'DS', 'E', 'ES', 'F', 'FS', 'G', 'GS', 'H', 'HS', 'I', 'IS', 'J', 'JS', 'K', 'KS', 'L', 'LS', 'DS', 'V', 'W', 'X', 'Y', 'Z']]
+
+texIgnoreMathZones = ['texMathText']
+
+texMathZoneIds = vim.eval('map('+str(texMathZones)+", 'hlID(v:val)')")
+texIgnoreMathZoneIds = vim.eval('map('+str(texIgnoreMathZones)+", 'hlID(v:val)')")
+ 
+ignore = texIgnoreMathZoneIds[0]
+ 
+def math():
+        synstackids = vim.eval("synstack(line('.'), col('.') - (col('.')>=2 ? 1 : 0))")
+        try:
+                first = next(i for i in reversed(synstackids) if i in texIgnoreMathZoneIds or i in texMathZoneIds)
+                return first != ignore
+        except StopIteration:
+                return False
+endglobal
+  
+
+
+##### Structure Snippets #####
+
+snippet beg "begin{} / end{}" bA
+\begin{$1}
+	$0
+\end{$1}
+endsnippet
+
+snippet nsec "numbered section" b
+\section{$1}
+$0
+endsnippet
+
+snippet sec "section" bA
+\section*{$1}
+$0
+endsnippet
+
+snippet fig "insert a figure" b
+\en
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{figures/$1}
+	\gr\caption{$2}
+	\label{fig:$0}
+\end{figure}
+\gr
+endsnippet
+
+snippet xfig "insert a figure for XeLaTeX (removed the language commands)" b
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{figures/$1}
+	\caption{$2}
+	\label{fig:$0}
+\end{figure}
+endsnippet
+
+snippet eqq "display equation" bA
+\\begin{equation*}
+	$0
+\\end{equation*}
+endsnippet
+
+snippet neqq "numbered display equation" bA
+\\begin{equation}
+	$0
+\\end{equation}
+endsnippet
+
+snippet align "align env" bA
+\\begin{align}
+	$0
+\\end{align}
+endsnippet
+
+#### Text
+
+snippet ti "italics" w
+\\textit{$1} $0
+endsnippet
+
+snippet bf "bold" w
+\\textbf{$1} $0
+endsnippet
+
+context "math()"
+snippet mbf "bold" wA
+\\mathbf{ $1 } $0
+endsnippet
+
+context "math()"
+snippet mbs "bold symbol" wA
+\\boldsymbol{ $1 } $0
+endsnippet
+
+##### Mathematics - Physics ######
+##### No need for \usepackage{physics}
+
+#### vectors(arrow, bold) dots hats
+
+context "math()"
+snippet avec "arrow vector" iA
+\\vec{$1} $0
+endsnippet
+
+context "math()"
+snippet vb "vector bold" iA
+\\boldsymbol{$1} $0
+endsnippet
+
+context "math()"
+snippet "([a-zA-Z])dot" "dot" riA
+\\dot{`!p snip.rv=match.group(1)`}
+endsnippet
+
+context "math()"
+snippet "2dot([a-zA-Z])" "ddot" riA
+\\ddot{`!p snip.rv=match.group(1)`}
+endsnippet
+
+context "math()"
+snippet "([a-zA-Z])hat" "hat" riA
+\\hat{`!p snip.rv=match.group(1)`}
+endsnippet
+
+context "math()"
+snippet "unit([a-zA-Z])" "Unit vector" riA
+\\hat{\boldsymbol{`!p snip.rv=match.group(1)`}}
+endsnippet
+
+## braket notation
+
+context "math()"
+snippet bra "Bra" A
+\| $1 \rangle $0
+endsnippet
+
+#### subscripts and powers
+
+context "math()"
+snippet ss "subscript" A
+_{ $1 } $0
+endsnippet
+
+context "math()"
+snippet tt "superscript (to the ...)" A
+^{ $1 } $0
+endsnippet
+
+context "math()"
+snippet '([A-Za-z])(\d)' "subscript, auto" wrA
+`!p snip.rv=match.group(1)`_{`!p snip.rv=match.group(2)`}
+endsnippet
+
+##### Fractions
+
+context "math()"
+snippet frac "fraction" A
+\\frac{ $1 }{ $2 } $0
+endsnippet
+
+#### Differential
+
+snippet dd "differential"
+\\mathrm{d}
+endsnippet
+
+#### Derivatives 
+context "math()"
+snippet der  "derivative"
+\\frac{\\mathrm{d} $1}{\mathrm{d} $2} $0
+endsnippet
+
+context "math()"
+snippet part "partial derivative"
+\\frac{\partial $1}{\partial $2} $0
+endsnippet
+
+#### Integrals
+context "math()"
+snippet lint "integral with limits" A
+\\int_{$1}^{$2} $0
+endsnippet
+
+#### Sums
+
+context "math()"
+snippet sum "sum"
+\\sum_{${1:n = 1}}^{${2:N}} $0
+endsnippet
+
+#### Symbols
+
+context "math()"
+snippet => "RightArrow" A
+\Rightarrow $0
+endsnippet
+
+context "math()"
+snippet grad "Gradient" A
+\\boldsymbol{\\nabla}
+endsnippet
+
+context "math()"
+snippet div "Divergence" A
+\\boldsymbol{\nabla} \cdot $0
+endsnippet
+
+context "math()"
+snippet curl "Curl" A
+\\boldsymbol{\nabla} \times $0 
+endsnippet
+
+context "math()"
+snippet ( "parentheses" A
+( $1 ) $0
+endsnippet
+
+context "math()"
+snippet pp "left right parentheses" A
+\\left( $1 \\right) $0
+endsnippet
+
+snippet mm "inline math"
+\$ $1 \$ $0
+endsnippet
+#### Dots
+
+context "math()"
+snippet *** "Cdots" A
+\\cdots
+endsnippet
+
+context "math()"
+snippet cd "cdot" wA
+\cdot
+endsnippet
+
+### greek letters
+
+context "math()"
+snippet gre "epsilon" wA
+\epsilon
+endsnippet
+
+context "math()"
+snippet grl "lambda" wA
+\lambda
+endsnippet
+
+context "math()"
+snippet psi "psi" wA
+\psi
+endsnippet
+
+context "math()"
+snippet Psi "Psi" wA
+\Psi
+endsnippet
+
+context "math()"
+snippet phi "phi" wA
+\phi
+endsnippet
+
+context "math()"
+snippet Phi "Phi" wA
+\Phi
+endsnippet
+
+context "math()"
+snippet xi "xi" wA
+\xi
+endsnippet
+
+context "math()"
+snippet grd "greek delta" wA
+\delta
+endsnippet
+
+context "math()"
+snippet order "big O order"
+\\mathcal{O}($1) $0
+endsnippet
+
+
+#### TEMPLATES ####
+
+#### PDFLaTeX with greek language support
+
+snippet template "PDF LaTeX Template with GR support" b
+\documentclass[10pt,a4paper]{report}
+
+\usepackage[LGR, T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[greek,english]{babel}
+\newcommand{\en}{\selectlanguage{english}}
+\newcommand{\gr}{\selectlanguage{greek}}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[dvipsnames]{xcolor}
+
+\author{Nasos Voutouras}
+
+\begin{document}
+$0
+\end{document}
+endsnippet
+
+
+snippet xelatex "PDF LaTeX Template with GR support" b
+\documentclass[10pt,a4paper]{report}
+
+\usepackage{fontspec}
+\defaultfontfeatures{Mapping=tex-text}
+
+\usepackage{xltxtra}
+
+\setmainfont{GFS Didot}
+\setsansfont{FreeSans}
+\setmonofont{Inconsolata}
+
+\usepackage{polyglossia}
+\setdefaultlanguage{greek}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[dvipsnames]{xcolor}
+
+\author{Nasos Voutouras}
+
+\begin{document}
+$0
+\end{document}
+endsnippet
