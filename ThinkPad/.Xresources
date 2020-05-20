@@ -3,7 +3,7 @@ URxvt.font: xft:LiberationMono:pixelsize=13:antialias=true
 URxvt.boldfont: xft:Inconsolata:size=13:antialias=true
 URxvt*scrollBar: false
 urxvt*matcher.button: 1
-!URxvt.letterSpace: 1
+!URxvt.letterSpace: 4
 Xft*dpi: 96
 Xft*hinting: true
 Xft*hintstyle: hintslight
