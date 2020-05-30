@@ -1,0 +1,13 @@
+#!/bin/bash
+
+### Copy Config files, snippets and other scripts
+### to their respective git folders. Then, deploy
+### the new files to their location.
+
+### List of files
+### -- .vim/UltiSnips/tex.snippets [tex.snippets]
+### -- .vimrc
+### -- .config/i3/config OR myfiles/.suckless/dwm-*/config.h
+### -- .Xresources or myfiles/.suckless/st*/config.h
+### -- .xinitrc
+### -- .config/polybar/* [launch.sh & config]
