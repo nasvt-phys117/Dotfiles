@@ -4,7 +4,7 @@
 #### From https://vi.stackexchange.com/questions/18490/ultisnips-context-and-tex
 #### and https://castel.dev/post/lecture-notes-1/#context
 #### Usage: 
-####	contex "isMath()"
+####	contex "math()"
 ####	snippet .....
 ####	.............
 ####	endsnippet
@@ -43,23 +43,12 @@ snippet nsec "numbered section" b
 $0
 endsnippet
 
-snippet sec "section" bA
+snippet sec "section" b
 \section*{$1}
 $0
 endsnippet
 
-snippet fig "insert a figure" b
-\en
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.4\textwidth]{figures/$1}
-	\gr\caption{$2}
-	\label{fig:$0}
-\end{figure}
-\gr
-endsnippet
-
-snippet xfig "insert a figure for XeLaTeX (removed the language commands)" b
+snippet fig "Insert a figure" b
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.4\textwidth]{figures/$1}
@@ -68,36 +57,41 @@ snippet xfig "insert a figure for XeLaTeX (removed the language commands)" b
 \end{figure}
 endsnippet
 
-snippet eqq "display equation" bA
+snippet eqq "Display equation" bA
 \\begin{equation*}
 	$0
 \\end{equation*}
 endsnippet
 
-snippet neqq "numbered display equation" bA
+snippet neqq "Numbered display equation" bA
 \\begin{equation}
 	$0
 \\end{equation}
 endsnippet
 
-snippet align "align env" bA
-\\begin{align}
+snippet eqar "Array of equations" bA
+\\begin{eqnarray*}
 	$0
-\\end{align}
+\\end{eqnarray*}
 endsnippet
 
+snippet mm "Inline math"
+\$ $1 \$ $0
+endsnippet
+
+########################################
 #### Text
 
-snippet ti "italics" w
+snippet ti "Italics" w
 \\textit{$1} $0
 endsnippet
 
-snippet bf "bold" w
+snippet bf "Bold" w
 \\textbf{$1} $0
 endsnippet
 
 context "math()"
-snippet mbf "bold" wA
+snippet mbf "Math bold" wA
 \\mathbf{ $1 } $0
 endsnippet
 
@@ -105,29 +99,29 @@ context "math()"
 snippet mbs "bold symbol" wA
 \\boldsymbol{ $1 } $0
 endsnippet
-
+#########################################
 ##### Mathematics - Physics ######
 ##### No need for \usepackage{physics}
 
 #### vectors(arrow, bold) dots hats
 
 context "math()"
-snippet avec "arrow vector" iA
-\\vec{$1} $0
+snippet avec([a-zA-Z]) "Arrow Vector" iA
+\\vec{`!p snip.rv=match.group(1)`} $0
 endsnippet
 
 context "math()"
-snippet vb "vector bold" iA
-\\boldsymbol{$1} $0
+snippet "vb([a-zA-Z])" "Vector Bold" iA
+\\boldsymbol{`!p snip.rv=match.group(1)`} $0
 endsnippet
 
 context "math()"
-snippet "([a-zA-Z])dot" "dot" riA
+snippet "([a-zA-Z])dot" "Dot - automatic" riA
 \\dot{`!p snip.rv=match.group(1)`}
 endsnippet
 
 context "math()"
-snippet "2dot([a-zA-Z])" "ddot" riA
+snippet "2dot([a-zA-Z])" "Double dot - automatic" riA
 \\ddot{`!p snip.rv=match.group(1)`}
 endsnippet
 
@@ -156,12 +150,12 @@ endsnippet
 #### subscripts and powers
 
 context "math()"
-snippet ss "subscript" A
+snippet ss "Subscript" A
 _{ $1 } $0
 endsnippet
 
 context "math()"
-snippet tt "superscript (to the ...)" A
+snippet tt "Superscript (mnemonic - to the ...)" A
 ^{ $1 } $0
 endsnippet
 
@@ -190,18 +184,29 @@ endsnippet
 
 #### Derivatives 
 context "math()"
-snippet der  "derivative"
+snippet dv  "derivative" w
 \\frac{\\mathrm{d} $1}{\mathrm{d} $2} $0
 endsnippet
 
 context "math()"
-snippet part "partial derivative"
+snippet dv([a-zA-Z]) "Derivative with one arg"
+\frac{\mathrm{d} $1}{\mathrm{d} `!p snip.rv=match.group(1)`} $0
+endsnippet
+
+context "math()"
+snippet pdv "Partial derivative"
 \\frac{\partial $1}{\partial $2} $0
 endsnippet
 
+context "math()"
+snippet pdv([a-zA-Z]) "Partial derivative with one arg"
+\\frac{\partial $1}{\partial `!p snip.rv=match.group(1)`} $0
+endsnippet
+
+
 #### Integrals
 context "math()"
-snippet lint "integral with limits" A
+snippet lint "Integral with limits" A
 \\int_{$1}^{$2} $0
 endsnippet
 
@@ -244,9 +249,6 @@ snippet pp "left right parentheses" A
 \\left( $1 \\right) $0
 endsnippet
 
-snippet mm "inline math"
-\$ $1 \$ $0
-endsnippet
 
 context "math()"
 snippet oo "Infinity" w
@@ -316,69 +318,3 @@ context "math()"
 snippet order "big O order"
 \\mathcal{O}($1) $0
 endsnippet
-
-
-#### TEMPLATES ####
-
-#### PDFLaTeX with greek language support
-
-snippet template "PDF LaTeX Template with GR support" b
-\documentclass[10pt,a4paper]{report}
-
-\usepackage[LGR, T1]{fontenc}
-\usepackage[utf8]{inputenc}
-
-\usepackage[greek,english]{babel}
-\newcommand{\en}{\selectlanguage{english}}
-\newcommand{\gr}{\selectlanguage{greek}}
-
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{graphicx}
-\usepackage{lmodern}
-
-\usepackage[hyphens]{url}
-\usepackage[hidelinks]{hyperref}
-\usepackage[dvipsnames]{xcolor}
-
-\author{Nasos Voutouras}
-
-\begin{document}
-$0
-\end{document}
-endsnippet
-
-
-snippet xelatex "PDF LaTeX Template with GR support" b
-\documentclass[10pt,a4paper]{report}
-\usepackage[variablett]{lmodern}
-\usepackage[T1]{fontenc}
-\usepackage{fontspec}
-\defaultfontfeatures{Mapping=tex-text}
-\usepackage{xltxtra}
-\usepackage{xunicode}
-\usepackage{xgreek}
-
-\setmainfont{GFS Didot}
-%\setsansfont{FreeSans}
-%\setmonofont{Inconsolata}
-
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{graphicx}
-\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
-
-\usepackage[hyphens]{url}
-\usepackage[hidelinks]{hyperref}
-\usepackage[dvipsnames]{xcolor}
-
-
-\author{Nasos Voutouras}
-
-\begin{document}
-$0
-\end{document}
-endsnippet
-
