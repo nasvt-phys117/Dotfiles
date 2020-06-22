@@ -106,12 +106,12 @@ endsnippet
 #### vectors(arrow, bold) dots hats
 
 context "math()"
-snippet avec([a-zA-Z]) "Arrow Vector" iA
+snippet "avec([a-zA-Z])" "Arrow Vector" riA
 \\vec{`!p snip.rv=match.group(1)`} $0
 endsnippet
 
 context "math()"
-snippet "vb([a-zA-Z])" "Vector Bold" iA
+snippet "vb([a-zA-Z])" "Vector Bold" riA
 \\boldsymbol{`!p snip.rv=match.group(1)`} $0
 endsnippet
 
@@ -179,7 +179,11 @@ endsnippet
 #### Differential
 
 snippet dd "differential"
-\\mathrm{d}
+\\mathrm{d} $0
+endsnippet
+
+snippet prt "partial derivative" A
+\\partial $0
 endsnippet
 
 #### Derivatives 
@@ -189,20 +193,19 @@ snippet dv  "derivative" w
 endsnippet
 
 context "math()"
-snippet dv([a-zA-Z]) "Derivative with one arg"
-\frac{\mathrm{d} $1}{\mathrm{d} `!p snip.rv=match.group(1)`} $0
+snippet 'dv([a-zA-Z])' "Derivative with one arg" wr
+\\frac{\mathrm{d} $1}{\mathrm{d} `!p snip.rv=match.group(1)`} $0
 endsnippet
 
 context "math()"
-snippet pdv "Partial derivative"
+snippet pdv "Partial derivative" w
 \\frac{\partial $1}{\partial $2} $0
 endsnippet
 
-context "math()"
-snippet pdv([a-zA-Z]) "Partial derivative with one arg"
-\\frac{\partial $1}{\partial `!p snip.rv=match.group(1)`} $0
-endsnippet
-
+#context "math()"
+#snippet 'pd([a-zA-Z])' "Partial Derivative with one arg" wr
+#\\frac{\partial $1 }{\partial `!p snip.rv=match.group(1)`} $0
+#endsnippet
 
 #### Integrals
 context "math()"
@@ -285,33 +288,33 @@ snippet grl "lambda" wA
 endsnippet
 
 context "math()"
-snippet psi "psi" wA
+snippet grC "psi" wA
 \psi
 endsnippet
 
 context "math()"
-snippet Psi "Psi" wA
+snippet grC "Psi" wA
 \Psi
 endsnippet
 
 context "math()"
-snippet phi "phi" wA
-\phi
+snippet grf "phi" wA
+\phi $0
 endsnippet
 
 context "math()"
-snippet Phi "Phi" wA
-\Phi
+snippet grF "Phi" wA
+\Phi $0
 endsnippet
 
 context "math()"
 snippet xi "xi" wA
-\xi
+\xi $0
 endsnippet
 
 context "math()"
 snippet grd "greek delta" wA
-\delta
+\delta $0
 endsnippet
 
 context "math()"
