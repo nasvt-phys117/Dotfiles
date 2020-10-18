@@ -1,0 +1,546 @@
+###### LaTeX #####
+
+#### MathZone Context
+#### From https://vi.stackexchange.com/questions/18490/ultisnips-context-and-tex
+#### and https://castel.dev/post/lecture-notes-1/#context
+#### Usage: 
+####	contex "math()"
+####	snippet .....
+####	.............
+####	endsnippet
+
+global !p
+texMathZones = ['texMathZone'+x for x in ['A', 'AS', 'B', 'BS', 'C', 'CS', 'D', 'DS', 'E', 'ES', 'F', 'FS', 'G', 'GS', 'H', 'HS', 'I', 'IS', 'J', 'JS', 'K', 'KS', 'L', 'LS', 'DS', 'V', 'W', 'X', 'Y', 'Z']]
+
+texIgnoreMathZones = ['texMathText']
+
+texMathZoneIds = vim.eval('map('+str(texMathZones)+", 'hlID(v:val)')")
+texIgnoreMathZoneIds = vim.eval('map('+str(texIgnoreMathZones)+", 'hlID(v:val)')")
+ 
+ignore = texIgnoreMathZoneIds[0]
+ 
+def math():
+        synstackids = vim.eval("synstack(line('.'), col('.') - (col('.')>=2 ? 1 : 0))")
+        try:
+                first = next(i for i in reversed(synstackids) if i in texIgnoreMathZoneIds or i in texMathZoneIds)
+                return first != ignore
+        except StopIteration:
+                return False
+endglobal
+  
+
+
+##### Structure Snippets #####
+
+snippet beg "begin{} / end{}" bA
+\begin{$1}
+	$0
+\end{$1}
+endsnippet
+
+snippet nsec "numbered section" b
+\section{$1}
+$0
+endsnippet
+
+snippet sec "section" b
+\section*{$1}
+$0
+endsnippet
+
+snippet fig "Insert a figure" b
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{figures/$1}
+	\caption{$2}
+	\label{fig:$0}
+\end{figure}
+endsnippet
+
+snippet eqq "Display equation" bA
+\\begin{equation*}
+	$0
+\\end{equation*}
+endsnippet
+
+snippet neqq "Numbered display equation" bA
+\\begin{equation}
+	$0
+\\end{equation}
+endsnippet
+
+snippet eqar "Array of equations" bA
+\\begin{eqnarray*}
+	$0
+\\end{eqnarray*}
+endsnippet
+
+snippet mm "Inline math"
+\$ $1 \$ $0
+endsnippet
+
+########################################
+#### Text
+
+snippet ti "Italics" w
+\\textit{$1} $0
+endsnippet
+
+snippet bf "Bold" w
+\\textbf{$1} $0
+endsnippet
+
+context "math()"
+snippet mbf "Math bold" wA
+\\mathbf{ $1 } $0
+endsnippet
+
+context "math()"
+snippet mbs "bold symbol" wA
+\\boldsymbol{ $1 } $0
+endsnippet
+#########################################
+##### Mathematics - Physics ######
+##### No need for \usepackage{physics}
+
+#### vectors(arrow, bold) dots hats
+
+context "math()"
+snippet "avec([a-zA-Z])" "Arrow Vector" riA
+\\vec{`!p snip.rv=match.group(1)`} $0
+endsnippet
+
+context "math()"
+snippet "vb([a-zA-Z])" "Vector Bold" riA
+\\boldsymbol{`!p snip.rv=match.group(1)`} $0
+endsnippet
+
+context "math()"
+snippet "([a-zA-Z])dot" "Dot - automatic" riA
+\\dot{`!p snip.rv=match.group(1)`}
+endsnippet
+
+context "math()"
+snippet "2dot([a-zA-Z])" "Double dot - automatic" riA
+\\ddot{`!p snip.rv=match.group(1)`}
+endsnippet
+
+context "math()"
+snippet "([a-zA-Z])hat" "hat" riA
+\\hat{`!p snip.rv=match.group(1)`}
+endsnippet
+
+context "math()"
+snippet "unit([a-zA-Z])" "Unit vector" riA
+\\hat{\boldsymbol{`!p snip.rv=match.group(1)`}}
+endsnippet
+
+## braket notation
+
+context "math()"
+snippet bra "Bra" A
+\langle $1 | $0
+endsnippet
+
+context "math()"
+snippet ket "Ket" A
+| $1 \rangle $0
+endsnippet
+
+context "math()"
+snippet avg "Expected value"
+\langle $1 \rangle $0
+endsnippet
+
+context "math()"
+snippet mel "Matrix Element"
+\langle $1 | $2 | $3 \rangle \$0
+endsnippet
+#### subscripts and powers
+
+context "math()"
+snippet ss "Subscript" A
+_{ $1 } $0
+endsnippet
+
+context "math()"
+snippet tt "Superscript (mnemonic - to the ...)" A
+^{ $1 } $0
+endsnippet
+
+context "math()"
+snippet '([A-Za-z])(\d)' "subscript, auto" wrA
+`!p snip.rv=match.group(1)`_{`!p snip.rv=match.group(2)`}
+endsnippet
+
+context "math()"
+snippet sr "Square Root"
+\\sqrt{ $1 } $0
+endsnippet
+
+##### Fractions
+
+context "math()"
+snippet frac "fraction" A
+\\frac{ $1 }{ $2 } $0
+endsnippet
+
+#### Differential
+
+snippet dd "differential"
+\\mathrm{d} $0
+endsnippet
+
+snippet prt "partial derivative" A
+\\partial $0
+endsnippet
+
+#### Derivatives 
+context "math()"
+snippet dv  "derivative" w
+\\frac{\\mathrm{d} $1}{\mathrm{d} $2} $0
+endsnippet
+
+context "math()"
+snippet 'dv([a-zA-Z])' "Derivative with one arg" wr
+\\frac{\mathrm{d} $1}{\mathrm{d} `!p snip.rv=match.group(1)`} $0
+endsnippet
+
+context "math()"
+snippet pdv "Partial derivative" w
+\\frac{\partial $1}{\partial $2} $0
+endsnippet
+
+#context "math()"
+#snippet 'pd([a-zA-Z])' "Partial Derivative with one arg" wr
+#\\frac{\partial $1 }{\partial `!p snip.rv=match.group(1)`} $0
+#endsnippet
+
+#### Integrals
+context "math()"
+snippet lint "Integral with limits" A
+\\int_{$1}^{$2} $3 \mathrm{d} $0
+endsnippet
+
+#### Sums
+
+context "math()"
+snippet sum "sum"
+\\sum_{${1:n = 1}}^{${2:N}} $0
+endsnippet
+
+#### Symbols
+
+context "math()"
+snippet => "RightArrow" A
+\Rightarrow $0
+endsnippet
+
+context "math()"
+snippet grad "Gradient" A
+\\boldsymbol{\\nabla}
+endsnippet
+
+context "math()"
+snippet div "Divergence" A
+\\boldsymbol{\nabla} \cdot $0
+endsnippet
+
+context "math()"
+snippet curl "Curl" A
+\\boldsymbol{\nabla} \times $0 
+endsnippet
+
+context "math()"
+snippet pp "left right parentheses" A
+\\left( $1 \\right) $0
+endsnippet
+
+context "math()"
+snippet oo "Infinity" w
+\\infty
+endsnippet
+
+context "math()"
+snippet dagger "Dagger" A
+^{ \dagger $1 } $0
+endsnippet
+
+#### Dots
+
+context "math()"
+snippet *** "Cdots" A
+\\cdots
+endsnippet
+
+context "math()"
+snippet cd "cdot" wA
+\cdot
+endsnippet
+
+### greek letters
+
+#context "math()"
+#snippet gra "Greek a" A
+#\alpha $0
+#endsnippet
+
+#context "math()"
+#snippet grA "Greek A" A
+#\Alpha $0
+#endsnippet
+
+
+context "math()"
+snippet grb "Greek b" A
+\beta $0
+endsnippet
+
+
+context "math()"
+snippet grB "Greek B" A
+\Beta $0
+endsnippet
+
+
+context "math()"
+snippet grg "Greek gamma" A
+\gamma $0
+endsnippet
+
+context "math()"
+snippet grG "Greek Gamma" A
+\Gamma $0
+endsnippet
+
+
+context "math()"
+snippet grd "Greek d" A
+\delta $0
+endsnippet
+
+
+context "math()"
+snippet grD "Greek D" A
+\Delta $0
+endsnippet
+
+
+context "math()"
+snippet gre "Greek e" A
+\epsilon $0
+endsnippet
+
+
+context "math()"
+snippet grE "Greek E" A
+\Epsilon $0
+endsnippet
+
+
+context "math()"
+snippet grz "Greek z" A
+\zeta $0
+endsnippet
+
+
+context "math()"
+snippet grZ "Greek Z" A
+\Zeta $0
+endsnippet
+
+
+context "math()"
+snippet grh "Greek h" A
+\eta $0
+endsnippet
+
+
+context "math()"
+snippet grH "Greek H" A
+\Eta $0
+endsnippet
+
+context "math()"
+snippet gri "Greek i" A
+\iota $0
+endsnippet
+
+
+context "math()"
+snippet grI "Greek I" A
+\Iota $0
+endsnippet
+
+
+context "math()"
+snippet grk "Greek k" A
+\kappa $0
+endsnippet
+
+
+context "math()"
+snippet grK "Greek K" A
+\Kappa $0
+endsnippet
+
+
+context "math()"
+snippet grl "Greek l" A
+\lambda $0
+endsnippet
+
+
+context "math()"
+snippet grL "Greek L" A
+\Lambda $0
+endsnippet
+
+
+context "math()"
+snippet grm "Greek m" A
+\mu $0
+endsnippet
+
+
+context "math()"
+snippet grM "Greek M" A
+\Mu $0
+endsnippet
+
+context "math()"
+snippet grn "Greek n" A
+\nu $0
+endsnippet
+
+
+context "math()"
+snippet grN "Greek N" A
+\Nu $0
+endsnippet
+
+
+context "math()"
+snippet grj "Greek xi" A
+\xi $0
+endsnippet
+
+
+context "math()"
+snippet grJ "Greek J" A
+\Xi $0
+endsnippet
+
+
+context "math()"
+snippet gro "Greek o" A
+\omikron $0
+endsnippet
+
+
+context "math()"
+snippet grR "Greek O" A
+\Omikron $0
+endsnippet
+
+
+context "math()"
+snippet grp "Greek p" A
+\pi $0
+endsnippet
+
+
+context "math()"
+snippet grP "Greek P" A
+\Pi $0
+endsnippet
+
+
+context "math()"
+snippet grr "Greek r" A
+\rho $0
+endsnippet
+
+
+context "math()"
+snippet grR "Greek R" A
+\Rho $0
+endsnippet
+
+
+context "math()"
+snippet grs "Greek s" A
+\sigma $0
+endsnippet
+
+
+context "math()"
+snippet grS "Greek S" A
+\Sigma $0
+endsnippet
+
+
+context "math()"
+snippet grt "Greek t" A
+\tau $0
+endsnippet
+
+
+context "math()"
+snippet grT "Greek T" A
+\Tau $0
+endsnippet
+
+#
+#context "math()"
+#snippet gru "Greek u" A
+#\nu $0
+#endsnippet
+#
+
+context "math()"
+snippet grf "Greek f" A
+\phi $0
+endsnippet
+
+
+context "math()"
+snippet grF "Greek F" A
+\Phi $0
+endsnippet
+
+context "math()"
+snippet grx "Greek x" A
+\chi $0
+endsnippet
+
+context "math()"
+snippet grX "Greek X" A
+\Chi $0
+endsnippet
+
+context "math()"
+snippet grc "Greek Psi" A
+\psi $0
+endsnippet
+
+context "math()"
+snippet grC "Greek Psi" A
+\Psi $0
+endsnippet
+
+
+context "math()"
+snippet grw "Greek Oomega" A
+\omega $0
+endsnippet
+
+context "math()"
+snippet grW "Greek Oomega" A
+\Omega $0
+endsnippet
+
+context "math()"
+snippet order "big O order"
+\\mathcal{O}($1) $0
+endsnippet
