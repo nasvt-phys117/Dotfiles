@@ -106,6 +106,11 @@ snippet mbb "mathbb symbols for R,C etc" wA
 endsnippet
 
 context "math()"
+snippet mcal "mathcal" wA
+\\mathcal{ $1 } $0
+endsnippet
+
+context "math()"
 snippet mtt "text in math" wA
 \\text{ $1 } $0
 endsnippet
@@ -191,7 +196,7 @@ endsnippet
 ##### Fractions
 
 context "math()"
-snippet frac "fraction" A
+snippet // "fraction" A
 \\frac{ $1 }{ $2 } $0
 endsnippet
 
@@ -272,7 +277,7 @@ snippet oo "Infinity" w
 endsnippet
 
 context "math()"
-snippet dagger "Dagger" A
+snippet dgr "Dagger" A
 ^{ \dagger $1 } $0
 endsnippet
 
@@ -563,4 +568,15 @@ endsnippet
 context "math()"
 snippet order "big O order"
 \\mathcal{O}($1) $0
+endsnippet
+
+context "math()"
+snippet ol "overline/bar"
+\\overline{ $1 } $0
+endsnippet
+
+
+context "math()"
+snippet sl "slashed / requires package slashed "
+\slashed{ $1 } $0
 endsnippet
