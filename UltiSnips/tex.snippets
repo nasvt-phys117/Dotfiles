@@ -121,13 +121,13 @@ endsnippet
 #### vectors(arrow, bold) dots hats
 
 context "math()"
-snippet "avec([a-zA-Z])" "Arrow Vector" riA
-\\vec{`!p snip.rv=match.group(1)`} $0
+snippet avec "Arrow Vector" 
+\\vec{$1} $0
 endsnippet
 
 context "math()"
-snippet "vb([a-zA-Z])" "Vector Bold" riA
-\\boldsymbol{`!p snip.rv=match.group(1)`} $0
+snippet vb "Vector Bold"
+\\boldsymbol{$1} $0
 endsnippet
 
 context "math()"
@@ -169,7 +169,7 @@ endsnippet
 
 context "math()"
 snippet mel "Matrix Element"
-\langle $1 | $2 | $3 \rangle \$0
+\langle $1 | $2 | $3 \rangle $0
 endsnippet
 #### subscripts and powers
 
@@ -183,10 +183,10 @@ snippet tt "Superscript (mnemonic - to the ...)" A
 ^{ $1 } $0
 endsnippet
 
-context "math()"
-snippet '([A-Za-z])(\d)' "subscript, auto" wrA
-`!p snip.rv=match.group(1)`_{`!p snip.rv=match.group(2)`}
-endsnippet
+#context "math()"
+#snippet '([A-Za-z])(\d)' "subscript, auto" wrA
+#`!p snip.rv=match.group(1)`_{`!p snip.rv=match.group(2)`}
+#endsnippet
 
 context "math()"
 snippet sr "Square Root"
@@ -295,10 +295,10 @@ endsnippet
 
 ### greek letters
 
-#context "math()"
-#snippet gra "Greek a" A
-#\alpha $0
-#endsnippet
+context "math()"
+snippet gra "Greek a" A
+\alpha $0
+endsnippet
 
 #context "math()"
 #snippet grA "Greek A" A
@@ -517,10 +517,10 @@ snippet grT "Greek T" A
 endsnippet
 
 #
-#context "math()"
-#snippet gru "Greek u" A
-#\nu $0
-#endsnippet
+context "math()"
+snippet gry "Greek u" A
+\upsilon $0
+endsnippet
 #
 
 context "math()"
@@ -564,7 +564,7 @@ context "math()"
 snippet grW "Greek Oomega" A
 \Omega $0
 endsnippet
-
+#############################
 context "math()"
 snippet order "big O order"
 \\mathcal{O}($1) $0
@@ -575,8 +575,20 @@ snippet ol "overline/bar"
 \\overline{ $1 } $0
 endsnippet
 
-
 context "math()"
 snippet sl "slashed / requires package slashed "
 \slashed{ $1 } $0
 endsnippet
+
+### MATRICES ###
+context "math()"
+snippet m22 "Matrix 2x2" 
+\\begin{bmatrix}
+	$1 & $2 \\\\
+	$3 & $4
+\\end{bmatrix}
+$0
+endsnippet
+
+
+
