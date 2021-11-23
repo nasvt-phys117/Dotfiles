@@ -1,0 +1,38 @@
+#!/bin/bash
+
+##This script enables or disables conservation mode for Lenovo IdeaPad Laptops.
+#It's tested on an IdeaPad 720s, Ryzen 5 2500u
+
+#LOCATION="$(/sys/bus/platform/drivers/ideapad_acpi/VPC2004\:00)"
+
+
+
+
+while getopts ":des" opt; do
+  case $opt in
+    d)
+    echo 0 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004\:00/conservation_mode
+    #echo "Conservation mode disabled" >&2
+    ;;
+    e)
+    echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004\:00/conservation_mode
+    #echo "Conservation mode enabled " >&2
+    ;;
+    s)
+    STATUS="$(cat /sys/bus/platform/drivers/ideapad_acpi/VPC2004\:00/conservation_mode)"
+    echo "Status: $STATUS" >&2
+    case $STATUS in
+	1)
+	MESSAGE="Conservation mode is currently enabled"
+	;;
+	0)
+	MESSAGE='Conservation mode is currently disabled'
+	;;
+	esac
+    notify-send -i "/usr/share/icons/Adwaita/256x256/legacy/battery-good.png" "$MESSAGE"
+    ;;  
+    \?)
+    echo "Invalid option: -$OPTARG" >&2
+    ;;
+  esac
+done
