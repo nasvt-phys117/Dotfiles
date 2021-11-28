@@ -3,9 +3,9 @@
 ## What's in here
 
 - `vimrc` / my vim setup. Nothing special but it works just fine.
-- LaTeX snippets for physics (UltiSnips). Basically I started this as a Physics Package replacement so everything would be done with basic commands instead of package specific ones. Most of what I am using is covered.
+- LaTeX snippets for physics (UltiSnips). This started as a replacement for the "[Physics](https://ctan.org/pkg/physics?lang=en)" package. The functionality that I currently need is (mostly) in there. I need to find a way to work with indices.
 - simple script to install the above (`install.sh`)
-- A script for my sister's IdeaPad that I am currently using along with my ThinkPad. It enables conservation mode and displays a notification if you ask for it. I made it in 5 minutes so it needs to be tidier and add better "features".
+- A script for my sister's IdeaPad. It enables conservation mode and displays a notification if you ask for it. I made it in 5 minutes so it needs to be tidier and add better "features".
 
 ## Conservation mode
 
