@@ -6,8 +6,6 @@
 #LOCATION="$(/sys/bus/platform/drivers/ideapad_acpi/VPC2004\:00)"
 
 
-
-
 while getopts ":des" opt; do
   case $opt in
     d)
@@ -29,7 +27,7 @@ while getopts ":des" opt; do
 	MESSAGE='Conservation mode is currently disabled'
 	;;
 	esac
-    notify-send -i "/usr/share/icons/Adwaita/256x256/legacy/battery-good.png" "$MESSAGE"
+    notify-send -t 3 -i "/usr/share/icons/Adwaita/256x256/legacy/battery-good.png" "$MESSAGE"
     ;;  
     \?)
     echo "Invalid option: -$OPTARG" >&2
